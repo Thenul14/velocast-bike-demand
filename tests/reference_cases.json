@@ -1,0 +1,362 @@
+[
+  {
+    "input": {
+      "date": "2012-06-23",
+      "hour": 19,
+      "weather": 1,
+      "temp": 29.6,
+      "atemp": 30.001999999999995,
+      "humidity": 27.0,
+      "windspeed": 12.998000000000001
+    },
+    "expected": 408.25
+  },
+  {
+    "input": {
+      "date": "2012-01-02",
+      "hour": 20,
+      "weather": 1,
+      "temp": 3.2799999999999994,
+      "atemp": -0.9982000000000006,
+      "humidity": 41.0,
+      "windspeed": 15.001299999999999
+    },
+    "expected": 98.72
+  },
+  {
+    "input": {
+      "date": "2011-10-28",
+      "hour": 2,
+      "weather": 1,
+      "temp": 7.040000000000001,
+      "atemp": 3.998000000000001,
+      "humidity": 66.0,
+      "windspeed": 19.0012
+    },
+    "expected": 10.31
+  },
+  {
+    "input": {
+      "date": "2012-05-29",
+      "hour": 19,
+      "weather": 1,
+      "temp": 28.660000000000004,
+      "atemp": 30.998599999999996,
+      "humidity": 52.0,
+      "windspeed": 23.9994
+    },
+    "expected": 532.74
+  },
+  {
+    "input": {
+      "date": "2011-01-20",
+      "hour": 0,
+      "weather": 1,
+      "temp": 4.220000000000001,
+      "atemp": -0.9982000000000006,
+      "humidity": 56.00000000000001,
+      "windspeed": 26.0027
+    },
+    "expected": 15.17
+  },
+  {
+    "input": {
+      "date": "2011-02-18",
+      "hour": 0,
+      "weather": 1,
+      "temp": 12.68,
+      "atemp": 13.000399999999999,
+      "humidity": 72.0,
+      "windspeed": 19.0012
+    },
+    "expected": 40.02
+  },
+  {
+    "input": {
+      "date": "2012-05-03",
+      "hour": 18,
+      "weather": 1,
+      "temp": 25.839999999999996,
+      "atemp": 28.002199999999995,
+      "humidity": 57.99999999999999,
+      "windspeed": 8.9981
+    },
+    "expected": 713.3
+  },
+  {
+    "input": {
+      "date": "2011-12-04",
+      "hour": 7,
+      "weather": 1,
+      "temp": 4.220000000000001,
+      "atemp": 3.998000000000001,
+      "humidity": 87.0,
+      "windspeed": 0.0
+    },
+    "expected": 40.21
+  },
+  {
+    "input": {
+      "date": "2012-03-14",
+      "hour": 2,
+      "weather": 1,
+      "temp": 15.5,
+      "atemp": 15.9968,
+      "humidity": 68.0,
+      "windspeed": 12.998000000000001
+    },
+    "expected": 9.24
+  },
+  {
+    "input": {
+      "date": "2011-10-26",
+      "hour": 5,
+      "weather": 1,
+      "temp": 11.739999999999998,
+      "atemp": 11.997200000000003,
+      "humidity": 71.0,
+      "windspeed": 15.001299999999999
+    },
+    "expected": 25.61
+  },
+  {
+    "input": {
+      "date": "2012-12-31",
+      "hour": 0,
+      "weather": 1,
+      "temp": 0.4599999999999991,
+      "atemp": -4.001200000000001,
+      "humidity": 55.00000000000001,
+      "windspeed": 12.998000000000001
+    },
+    "expected": 16.25
+  },
+  {
+    "input": {
+      "date": "2012-04-23",
+      "hour": 22,
+      "weather": 1,
+      "temp": 7.040000000000001,
+      "atemp": 5.001199999999997,
+      "humidity": 76.0,
+      "windspeed": 12.998000000000001
+    },
+    "expected": 102.34
+  },
+  {
+    "input": {
+      "date": "2012-06-16",
+      "hour": 16,
+      "weather": 2,
+      "temp": 25.839999999999996,
+      "atemp": 26.998999999999995,
+      "humidity": 37.0,
+      "windspeed": 7.0015
+    },
+    "expected": 597.21
+  },
+  {
+    "input": {
+      "date": "2012-06-18",
+      "hour": 4,
+      "weather": 2,
+      "temp": 17.380000000000003,
+      "atemp": 18.0032,
+      "humidity": 77.0,
+      "windspeed": 12.998000000000001
+    },
+    "expected": 7.29
+  },
+  {
+    "input": {
+      "date": "2011-09-18",
+      "hour": 17,
+      "weather": 2,
+      "temp": 18.320000000000004,
+      "atemp": 18.9998,
+      "humidity": 64.0,
+      "windspeed": 12.998000000000001
+    },
+    "expected": 333.49
+  },
+  {
+    "input": {
+      "date": "2011-03-22",
+      "hour": 8,
+      "weather": 2,
+      "temp": 10.8,
+      "atemp": 11.000600000000002,
+      "humidity": 57.99999999999999,
+      "windspeed": 19.999499999999998
+    },
+    "expected": 176.71
+  },
+  {
+    "input": {
+      "date": "2011-01-10",
+      "hour": 8,
+      "weather": 2,
+      "temp": -2.3600000000000003,
+      "atemp": -8.0008,
+      "humidity": 50.0,
+      "windspeed": 19.0012
+    },
+    "expected": 163.81
+  },
+  {
+    "input": {
+      "date": "2012-12-01",
+      "hour": 14,
+      "weather": 2,
+      "temp": 8.919999999999998,
+      "atemp": 9.000800000000002,
+      "humidity": 71.0,
+      "windspeed": 0.0
+    },
+    "expected": 466.87
+  },
+  {
+    "input": {
+      "date": "2012-09-23",
+      "hour": 6,
+      "weather": 1,
+      "temp": 12.68,
+      "atemp": 13.000399999999999,
+      "humidity": 62.0,
+      "windspeed": 16.997899999999998
+    },
+    "expected": 22.38
+  },
+  {
+    "input": {
+      "date": "2012-05-17",
+      "hour": 17,
+      "weather": 1,
+      "temp": 23.020000000000003,
+      "atemp": 24.999200000000002,
+      "humidity": 31.0,
+      "windspeed": 8.9981
+    },
+    "expected": 826.41
+  },
+  {
+    "input": {
+      "date": "2011-01-29",
+      "hour": 3,
+      "weather": 1,
+      "temp": 1.4000000000000004,
+      "atemp": -2.0013999999999985,
+      "humidity": 64.0,
+      "windspeed": 8.9981
+    },
+    "expected": 9.99
+  },
+  {
+    "input": {
+      "date": "2012-08-20",
+      "hour": 6,
+      "weather": 2,
+      "temp": 20.2,
+      "atemp": 22.0028,
+      "humidity": 78.0,
+      "windspeed": 8.9981
+    },
+    "expected": 155.07
+  },
+  {
+    "input": {
+      "date": "2011-01-01",
+      "hour": 19,
+      "weather": 3,
+      "temp": 11.739999999999998,
+      "atemp": 11.997200000000003,
+      "humidity": 88.0,
+      "windspeed": 16.997899999999998
+    },
+    "expected": 55.91
+  },
+  {
+    "input": {
+      "date": "2011-07-25",
+      "hour": 10,
+      "weather": 1,
+      "temp": 30.54,
+      "atemp": 36.998000000000005,
+      "humidity": 59.0,
+      "windspeed": 0.0
+    },
+    "expected": 123.0
+  },
+  {
+    "input": {
+      "date": "2011-12-15",
+      "hour": 22,
+      "weather": 1,
+      "temp": 16.44,
+      "atemp": 17.0,
+      "humidity": 63.0,
+      "windspeed": 22.0028
+    },
+    "expected": 142.19
+  },
+  {
+    "input": {
+      "date": "2012-10-22",
+      "hour": 6,
+      "weather": 1,
+      "temp": 8.919999999999998,
+      "atemp": 7.9975999999999985,
+      "humidity": 76.0,
+      "windspeed": 6.0032
+    },
+    "expected": 135.32
+  },
+  {
+    "input": {
+      "date": "2012-05-25",
+      "hour": 2,
+      "weather": 2,
+      "temp": 21.14,
+      "atemp": 22.0028,
+      "humidity": 83.0,
+      "windspeed": 0.0
+    },
+    "expected": 16.11
+  },
+  {
+    "input": {
+      "date": "2012-01-12",
+      "hour": 15,
+      "weather": 1,
+      "temp": 12.68,
+      "atemp": 13.000399999999999,
+      "humidity": 72.0,
+      "windspeed": 8.9981
+    },
+    "expected": 153.42
+  },
+  {
+    "input": {
+      "date": "2012-01-15",
+      "hour": 4,
+      "weather": 2,
+      "temp": -0.47999999999999954,
+      "atemp": -6.9976,
+      "humidity": 47.0,
+      "windspeed": 26.0027
+    },
+    "expected": 4.03
+  },
+  {
+    "input": {
+      "date": "2011-12-16",
+      "hour": 6,
+      "weather": 2,
+      "temp": 12.68,
+      "atemp": 13.000399999999999,
+      "humidity": 33.0,
+      "windspeed": 19.999499999999998
+    },
+    "expected": 91.92
+  }
+]

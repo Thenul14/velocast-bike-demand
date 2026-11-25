@@ -1,0 +1,8 @@
+# Original model was trained with scikit-learn 1.7.2; keep this version.
+scikit-learn==1.7.2
+numpy==1.26.4
+scipy==1.15.3
+pandas==2.2.3
+joblib==1.5.3
+threadpoolctl==3.6.0
+cloudpickle==3.1.2

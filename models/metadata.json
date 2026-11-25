@@ -1,0 +1,27 @@
+{
+  "name": "Random Forest Regressor",
+  "model_id": "m-19cbb2382bb545f299a0476d321957a1",
+  "source_run_id": "d2fc377bc6374b03926e8d6fe2df1e21",
+  "sklearn_version": "1.7.2",
+  "sha256_uncompressed": "1febf895e2d5a305fb7d4ee56a65891dbc42e1b8a50eb6bbbb9a197bc91383a8",
+  "estimators": 100,
+  "r2": 0.9457715406644929,
+  "mae": 24.581766398158802,
+  "rmse": 41.43870740022125,
+  "dataset": "Capital Bikeshare, Washington DC, 2011\u20132012",
+  "features": [
+    "season",
+    "yr",
+    "mnth",
+    "day",
+    "hr",
+    "holiday",
+    "weekday",
+    "workingday",
+    "weather_situation",
+    "temp",
+    "atemp",
+    "hum",
+    "windspeed"
+  ]
+}
