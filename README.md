@@ -12,6 +12,17 @@ The application is an inference-focused extension of a university group Data Eng
 
 The underlying model uses historical Capital Bikeshare data from Washington, DC, covering 2011–2012. VeloCast is a historical scenario exploration tool, rather than a live demand forecasting service.
 
+## Related Project — MLOps Pipeline
+
+VeloCast is built using a pre-trained Random Forest model originating from an end-to-end Bike Sharing Demand Prediction MLOps project.
+
+The original pipeline incorporates data ingestion, validation, feature engineering, automated model training, experiment tracking and model registration using Apache Airflow, MLflow, MariaDB and Redis.
+
+VeloCast extends this work by providing an accessible, cloud-deployed interface for model inference.
+
+- [Original MLOps Pipeline Repository](https://github.com/Thenul14/bike-sharing-mlops-pipeline)
+
+
 ## Key features
 
 - **Interactive prediction:** Estimate hourly rental demand by selecting a date, hour and weather conditions.
