@@ -1,135 +1,149 @@
 # VeloCast — Bike Demand Intelligence
 
-An interactive machine learning portfolio application for exploring historical hourly bike rental demand. The React dashboard calls a same-origin Python prediction function on Vercel, using the original saved Random Forest from a university group MLOps project.
+An interactive machine learning application that estimates hourly bike rental demand from historical calendar and weather conditions.
 
-**No retraining, database, API key, external inference service or MLflow server is required.**
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black) ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.7.2-F7931E?logo=scikitlearn&logoColor=white) ![Vercel](https://img.shields.io/badge/Vercel-Ready-000000?logo=vercel&logoColor=white)
 
-## Features
+## Overview
 
-- Scenario inputs: historical date, hour, weather, temperature, feels-like temperature, humidity and wind speed.
-- Automatic calendar features from the original dataset (season, weekday, holiday and working day).
-- Actual model prediction, plus a 24-hour profile holding weather constant.
-- Responsive light-themed interface, loading and error states, input validation and accessible controls.
-- Original model file compressed losslessly; the API loads the bundled model directly.
+VeloCast turns a previously trained Random Forest regression model into an accessible, interactive web application. Users can explore how time of day, seasonal patterns and weather conditions influence estimated bike rental demand through a responsive dashboard.
 
-## Deploy on Vercel
+The application is an inference-focused extension of a university group Data Engineering and MLOps project involving Apache Airflow, MariaDB, Redis and MLflow. It demonstrates how an existing machine learning artefact can be integrated into a standalone web application without rerunning the original training pipeline.
 
-1. Extract this ZIP. Open the `velocast-bike-demand` folder in VS Code. Keep the `models` folder and all hidden configuration files.
-2. Create an empty repository at [github.com/new](https://github.com/new) named `velocast-bike-demand`. Keep it private until you have permission to publish the original group work and its model.
-3. Run the following commands from the extracted project root (substitute your GitHub username):
+The underlying model uses historical Capital Bikeshare data from Washington, DC, covering 2011–2012. VeloCast is a historical scenario exploration tool, rather than a live demand forecasting service.
 
-   ```bash
-   git init
-   git add .
-   git status
-   git commit -m "Deploy VeloCast bike demand prediction demo"
-   git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/velocast-bike-demand.git
-   git push -u origin main
-   ```
+## Key features
 
-4. Sign in to [Vercel](https://vercel.com/new) with GitHub and import the repository into your personal Hobby account.
-5. Keep the root directory as `.`. Framework preset: **Vite**. Node.js: **22.x**. The committed `vercel.json` sets `npm install`, `npm run build`, `dist`, and the Python API's bundled model files. Python 3.12 is specified in `.python-version`.
-6. No environment variables are needed. Select **Deploy**. Open the deployment URL and press **Predict demand**. A first request may be slower while the model loads.
-7. Confirm the `/api/predict` health URL returns JSON and the prediction POST succeeds. The default example should return approximately **570.72**, displayed as **571 bikes**.
+- **Interactive prediction:** Estimate hourly rental demand by selecting a date, hour and weather conditions.
+- **24-hour demand profile:** Visualise estimated demand throughout the selected day and identify the predicted peak hour under constant weather conditions.
+- **Automated feature preparation:** Derive season, weekday, holiday and working-day information from the historical dataset's calendar.
+- **Real model inference:** Generate predictions using the original trained Random Forest model, rather than simulated or hardcoded outputs.
+- **Responsive interface:** A lightweight React dashboard with input validation, loading indicators and error handling.
+- **Serverless architecture:** A Python prediction API designed for Vercel, with no external inference service, database or API keys required at runtime.
 
-The Hobby plan is intended for personal, non-commercial projects within its quotas. This package is designed for Vercel's Python runtime and a normal Vite frontend; actual cloud deployment was not performed. If a deployment reports a function bundle-size limit, inspect build logs and the current Vercel Python limits before changing plans. Do not remove the model file. See [Python runtime](https://vercel.com/docs/functions/runtimes/python) and [Hobby plan](https://vercel.com/docs/plans/hobby).
+## Machine learning model
 
-## Run locally (Windows / VS Code)
+The application uses the original Random Forest Regressor from the archived MLflow model registry. The model contains 100 decision trees and accepts 13 calendar and weather features.
 
-Install Python 3.12 and Node.js 22, then open the extracted folder. In terminal 1 (PowerShell):
+| Metric | Original held-out test result |
+| :--- | ---: |
+| R² | **0.9458** |
+| Mean Absolute Error (MAE) | 24.58 rentals |
+| Root Mean Squared Error (RMSE) | 41.44 rentals |
+| Number of decision trees | 100 |
+| Input features | 13 |
 
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe dev_server.py
-```
+These figures are historical results from the original project, not a new evaluation of the deployed application. R² is a regression goodness-of-fit metric, not a classification accuracy percentage.
 
-Leave the Python server running on port 8000. In a second terminal:
+### Model optimisation for deployment
 
-```powershell
-npm install
-npm run dev
-```
+The original model was compressed losslessly from approximately 119.2 MB to 19.1 MB using gzip, reducing its stored size by about 84% without retraining or altering the underlying model bytes. Prediction-equivalence checks on all 17,379 original hourly dataset rows found identical outputs between the original and compressed model.
 
-Open the URL printed by Vite (usually `http://localhost:5173`). Vite proxies API requests to the local Python server. To build: `npm run build`. To preview the build locally with the API still running: `npm run preview`.
+The model is loaded on demand and cached by the Python inference function. The original feature ordering and training-scale weather values are preserved to maintain consistency with the training pipeline.
 
-On macOS/Linux, use `python3.12 -m venv .venv`, `.venv/bin/python -m pip install -r requirements.txt`, then `.venv/bin/python dev_server.py` instead.
-
-## Architecture
+## System architecture
 
 ```mermaid
 flowchart LR
-  A[React / Vite dashboard] -->|POST /api/predict| B[Python Vercel Function]
-  C[Historical calendar] --> B
-  B --> D[13-feature DataFrame]
-  E[Original compressed model] --> F[Random Forest inference]
-  D --> F
-  F -->|Hourly estimate + 24-hour profile| A
+    A[React dashboard] -->|Scenario inputs| B[Python prediction API]
+    C[Historical calendar] --> D[Feature preparation]
+    B --> D
+    D --> E[Random Forest inference]
+    F[Bundled trained model] --> E
+    E -->|Hourly estimate and daily profile| A
 ```
+
+The frontend submits scenario parameters to the same-origin prediction API. The backend validates the inputs, retrieves historical calendar information and constructs the 13-feature input schema. The model evaluates all 24 hours of the selected date, returning both the selected hour's estimate and the complete daily demand profile.
+
+## Technology stack
+
+| Layer | Technologies |
+| :--- | :--- |
+| Frontend | React, JavaScript, CSS, Vite |
+| Backend | Python, HTTP serverless function |
+| Machine learning | scikit-learn, Random Forest Regression |
+| Data processing | pandas, NumPy |
+| Model storage | Losslessly compressed pickle artefact |
+| Deployment target | Vercel |
+| Testing | Python unittest, reference prediction cases |
+| Original training pipeline | Apache Airflow, MariaDB, Redis, MLflow |
+
+## Example prediction
+
+A sample scenario illustrates the application's model inference:
+
+| Input | Value |
+| :--- | :--- |
+| Date | 15 July 2012 |
+| Time | 17:00 |
+| Weather | Clear / partly cloudy |
+| Temperature | 24°C |
+| Feels-like temperature | 26°C |
+| Humidity | 65% |
+| Wind speed | 12 km/h |
+| **Predicted hourly rentals** | **571 bikes** |
+
+The unrounded model output is 570.72 rentals. This is a model-generated estimate for the supplied historical scenario, not an observed rental count.
+
+## API
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/predict` | Lightweight endpoint health check |
+| `POST` | `/api/predict` | Predict hourly demand and return the 24-hour profile |
+
+Example request body:
+
+```json
+{
+  "date": "2012-07-15",
+  "hour": 17,
+  "weather": 1,
+  "temp": 24,
+  "atemp": 26,
+  "humidity": 65,
+  "windspeed": 12
+}
+```
+
+The API returns the estimated rental count, hourly predictions, calendar context and model information. Invalid scenario inputs are rejected with a descriptive error response.
+
+## Repository structure
 
 ```text
 velocast-bike-demand/
-├── api/predict.py                 # Vercel function and input validation
-├── models/
-│   ├── random_forest.pkl.gz       # Required losslessly compressed model
-│   ├── calendar.json              # Calendar fields for the 731 historical dates
-│   └── metadata.json              # Original model provenance and metrics
-├── public/favicon.svg
+├── api/                 # Prediction endpoint and feature preparation
+├── models/              # Trained model, historical calendar and metadata
+├── public/              # Static assets
 ├── src/
-│   ├── components/               # Form, result, chart and icons
-│   ├── services/predictionService.js
+│   ├── components/      # Prediction form, results and hourly chart
+│   ├── services/        # Frontend API integration
 │   ├── App.jsx
-│   ├── main.jsx
 │   └── index.css
-├── tests/                         # Reference predictions and unit tests
-├── dev_server.py                  # Local HTTP server
-├── requirements.txt
-├── package.json
-├── vite.config.js
-├── vercel.json
+├── tests/               # Model integrity and prediction regression tests
+├── dev_server.py        # Local development API server
+├── requirements.txt     # Python dependencies
+├── package.json         # Frontend dependencies
+├── vercel.json          # Deployment configuration
 └── README.md
 ```
 
-## Model provenance
+## Testing and verification
 
-| Metric | Original archived value |
-|---|---:|
-| R² (held-out test) | 0.94577154 |
-| MAE | 24.58177 rentals |
-| RMSE | 41.43871 rentals |
-| Trees | 100 |
-| Training scikit-learn version | 1.7.2 |
+Five automated unit tests passed in the packaging environment, covering model integrity, feature schema, prediction output, 30 reference scenarios and invalid-input handling. The HTTP prediction endpoint was also tested locally.
 
-The source is the **BikeShare_RandomForest version 4** model from the archived MLflow experiment `163616190966530924`, model `m-19cbb2382bb545f299a0476d321957a1` and run `d2fc377bc6374b03926e8d6fe2df1e21`. These are historical logged metrics, not newly measured generalisation results. Gzip preserves the exact pickle bytes (SHA-256 in `models/metadata.json`). Only load this trusted bundled model; never unpickle a file from an untrusted source. The original MLOps pipeline is a separate project, and this package does not modify it. Add a link to the pipeline repository and acknowledge all contributors before publishing.
+The verification environment used scikit-learn 1.8.0; the project pins the original training version (1.7.2) for deployment. The Vite production build and cloud deployment have not been independently verified. Reference prediction checks establish consistency, not independent model accuracy.
 
-### Input contract
+## Scope and future improvements
 
-The model expects these columns, in order: `season, yr, mnth, day, hr, holiday, weekday, workingday, weather_situation, temp, atemp, hum, windspeed`.
+VeloCast demonstrates the integration of machine learning, software engineering and model serving in an interactive application. Its estimates are limited to scenarios within the 2011–2012 historical dataset; they do not represent current bike availability or reliable forecasts for other cities or years. The 24-hour profile assumes constant weather, and the application does not estimate prediction uncertainty. The original random train/test split may also overestimate performance on future periods.
 
-The original training code converted normalised features using `temp*47-8`, `atemp*66-16`, `hum*100`, `windspeed*67`. The dashboard accepts values directly on those training scales, so it must **not** normalise them a second time. The calendar is derived from the original `day.csv` rather than inferred using modern holiday rules. Date is restricted to 2011–2012. Season labels follow the source dataset's coding. Severe weather is a rare condition in the dataset.
+Potential extensions include time-based validation, updated mobility datasets, live weather integration and prediction uncertainty estimates.
 
-### API example
+## Dataset and acknowledgements
 
-POST `/api/predict` with `Content-Type: application/json`:
+- **Dataset:** [Bike Sharing — UCI Machine Learning Repository](https://doi.org/10.24432/C5W894), H. Fanaee-T and J. Gama.
+- **Research:** [Event labeling combining ensemble detectors and background knowledge](https://doi.org/10.1007/s13748-013-0040-3).
+- **Model provenance:** BikeShare_RandomForest, version 4, from the original university group MLOps project. Model metadata is included in `models/metadata.json`.
 
-```json
-{"date":"2012-07-15","hour":17,"weather":1,"temp":24,"atemp":26,"humidity":65,"windspeed":12}
-```
-
-Weather codes: 1 = clear/partly cloudy; 2 = mist/cloudy; 3 = light rain/snow; 4 = severe rain/snow. Response includes `predicted_count`, `hourly` (24 `{hour,count}` objects), calendar `context`, `model`, `date` and `hour`. Invalid inputs return HTTP 400 with an error message. GET `/api/predict` is a lightweight route health check, not a model-inference check.
-
-## Verification
-
-```bash
-python -m unittest discover -s tests -v
-```
-
-Five tests passed in the packaging environment, including model byte integrity and 30 reference input cases. Original and compressed models produced exactly identical predictions for all 17,379 archived hourly dataset rows. Calendar fields matched the same rows. The packaging environment had Python 3.13 and scikit-learn 1.8.0, not the original pinned 1.7.2. Dependency downloads were blocked, so the Vite production build and tests in the exact deployment environment were not run. The deployment pins scikit-learn 1.7.2 to avoid cross-version deserialisation. Verify both on your computer or Vercel before presenting the live demo. The reference cases are regression checks, not an independent accuracy evaluation.
-
-## Limitations and attribution
-
-- This is a historical scenario simulator, **not a live forecast**, not a real-time bike availability service and not a prediction for another city or current year.
-- The original random train/test split may overestimate future-time generalisation; weather is held constant for the daily profile, and no uncertainty interval is claimed.
-- Data: Fanaee-T, H. and Gama, J., *Bike Sharing*, UCI Machine Learning Repository. [Dataset DOI](https://doi.org/10.24432/C5W894). Based on Capital Bikeshare in Washington, DC (2011–2012). Related paper: *Event labeling combining ensemble detectors and background knowledge*, Progress in Artificial Intelligence, DOI: [10.1007/s13748-013-0040-3](https://doi.org/10.1007/s13748-013-0040-3).
-- The original trained model is group coursework; confirm permission from relevant contributors and university before publishing. No open-source licence is imposed on the group's work by this package.
+The original training pipeline and model were developed as collaborative university coursework. VeloCast is a standalone inference application built around that shared work. No open-source licence is asserted for the group's original work or trained model.
